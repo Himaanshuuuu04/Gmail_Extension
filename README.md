@@ -2,6 +2,18 @@
 
 A lightweight, visually appealing Chrome extension built with [WXT](https://wxt.dev/) and React that enhances your Gmail inbox. It allows you to assign color-coded tags to any email thread directly from the list view, tinting the whole row so you can instantly recognize important tasks, follow-ups, and more.
 
+## 📸 Screenshots
+
+### Before
+<p align="center">
+  <img src="./public/Before.png" alt="Before tagging">
+</p>
+
+### After
+<p align="center">
+  <img src="./public/After.png" alt="After tagging">
+</p>
+
 ## ✨ Features
 
 - **Inline Tagging**: Adds a native-feeling dropdown chip right next to the email subject.
