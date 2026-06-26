@@ -1,0 +1,387 @@
+:host {
+  display: block;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Sidebar Styles */
+.aira-sidebar {
+  box-sizing: border-box;
+  width: 320px;
+  background: #f8f9fa; /* Light grey background to match Modern Gmail sidebar panel */
+  border-left: 1px solid #e0e2e6;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: 'Google Sans', Roboto, sans-serif;
+  height: 100%;
+  position: relative;
+  z-index: 1000;
+  transition: width 0.3s ease, padding 0.3s ease;
+  overflow: visible;
+}
+
+.aira-sidebar * {
+  box-sizing: border-box;
+}
+
+.aira-sidebar.collapsed {
+  width: 0;
+  padding-left: 0;
+  padding-right: 0;
+  border-left: none;
+}
+
+.aira-sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%; /* Stretch to fill parent container width */
+  height: 100%;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.aira-sidebar.collapsed .aira-sidebar-content {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.aira-sidebar-toggle {
+  position: absolute;
+  left: -40px;
+  top: 24px;
+  width: 40px;
+  height: 40px;
+  background: white;
+  border: 1px solid #e0e2e6;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-header-card {
+  padding: 16px;
+  background: white;
+  border: 1px solid #e0e2e6;
+  border-radius: 12px;
+}
+
+.aira-sidebar-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #202124;
+}
+
+.aira-sidebar-subtitle {
+  font-size: 12px;
+  color: #5f6368;
+}
+
+.sidebar-card {
+  padding: 16px 16px 16px 20px; /* spacing for pseudo-element line */
+  border-radius: 12px;
+  background: white;
+  border: 1px solid #e0e2e6;
+  position: relative;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+/* The elegant rounded vertical border indicator line */
+.sidebar-card::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 14px;
+  bottom: 14px;
+  width: 3px;
+  border-radius: 0 1.5px 1.5px 0;
+}
+
+.sidebar-card.ownership::before { background: #1a73e8; }
+.sidebar-card.decision::before { background: #c26400; }
+.sidebar-card.followup::before { background: #7627cb; }
+
+.sidebar-card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sidebar-card.ownership .sidebar-card-icon { background: #edf2fa; color: #1a73e8; }
+.sidebar-card.decision .sidebar-card-icon { background: #ffeacf; color: #c26400; }
+.sidebar-card.followup .sidebar-card-icon { background: #f3e8fd; color: #7627cb; }
+
+.sidebar-card-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.sidebar-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.sidebar-card.ownership .sidebar-card-title { color: #1a73e8; }
+.sidebar-card.decision .sidebar-card-title { color: #c26400; }
+.sidebar-card.followup .sidebar-card-title { color: #7627cb; }
+
+.sidebar-card-desc {
+  font-size: 12px;
+  color: #3c4043;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.sidebar-card-cues {
+  font-size: 12px;
+  color: #5f6368;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-card-cues span {
+  display: flex;
+  gap: 4px;
+}
+
+.sidebar-card-cues strong {
+  font-weight: 600;
+}
+
+.sidebar-card.ownership .sidebar-card-cues strong { color: #1a73e8; }
+.sidebar-card.decision .sidebar-card-cues strong { color: #c26400; }
+.sidebar-card.followup .sidebar-card-cues strong { color: #7627cb; }
+
+.sidebar-footer {
+  margin-top: auto;
+  background: #f1f3f4; /* light grey footer background */
+  border: 1px solid #e0e2e6;
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.sidebar-footer-icon {
+  color: #3c4043;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.sidebar-footer-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-footer-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #202124;
+  margin-bottom: 4px;
+}
+
+.sidebar-footer-desc {
+  font-size: 12px;
+  color: #5f6368;
+  line-height: 1.4;
+}
+
+/* InsightCard Styles */
+.aira-insight-card {
+  position: relative;
+  margin: 16px 0;
+  border: 1px solid #e0e2e6;
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  background: white;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  box-sizing: border-box;
+}
+
+.aira-insight-card.ownership { border-left: 4px solid #1a73e8; }
+.aira-insight-card.decision { border-left: 4px solid #c26400; }
+.aira-insight-card.followup { border-left: 4px solid #7627cb; }
+
+.insight-card-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.insight-card-icon-container {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.aira-insight-card.ownership .insight-card-icon-container { background-color: #edf2fa; color: #1a73e8; }
+.aira-insight-card.decision .insight-card-icon-container { background-color: #ffeacf; color: #c26400; }
+.aira-insight-card.followup .insight-card-icon-container { background-color: #f3e8fd; color: #7627cb; }
+
+.insight-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.insight-card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+}
+
+.aira-insight-card.ownership .insight-card-header-brand,
+.aira-insight-card.ownership .insight-card-header-dot,
+.aira-insight-card.ownership .insight-card-header-category {
+  color: #1a73e8;
+}
+
+.aira-insight-card.decision .insight-card-header-brand,
+.aira-insight-card.decision .insight-card-header-dot,
+.aira-insight-card.decision .insight-card-header-category {
+  color: #c26400;
+}
+
+.aira-insight-card.followup .insight-card-header-brand,
+.aira-insight-card.followup .insight-card-header-dot,
+.aira-insight-card.followup .insight-card-header-category {
+  color: #7627cb;
+}
+
+.insight-card-text {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  gap: 3px;
+}
+
+.insight-card-title {
+  color: #1f1f1f;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.insight-card-desc {
+  color: #5f6368;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.insight-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 16px; /* spacing to prevent overlapping the close button */
+}
+
+.btn-action,
+.btn-dismiss {
+  background: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  height: 36px;
+  box-sizing: border-box;
+}
+
+.btn-action {
+  border: 1px solid transparent;
+}
+
+.aira-insight-card.ownership .btn-action {
+  color: #1a73e8;
+  border-color: #1a73e8;
+}
+.aira-insight-card.ownership .btn-action:hover {
+  background-color: #edf2fa;
+}
+
+.aira-insight-card.decision .btn-action {
+  color: #c26400;
+  border-color: #c26400;
+}
+.aira-insight-card.decision .btn-action:hover {
+  background-color: #fff5eb;
+}
+
+.aira-insight-card.followup .btn-action {
+  color: #7627cb;
+  border-color: #7627cb;
+}
+.aira-insight-card.followup .btn-action:hover {
+  background-color: #f3e8fd;
+}
+
+.btn-action-icon {
+  display: flex;
+  align-items: center;
+}
+
+.btn-dismiss {
+  border: 1px solid #dadce0;
+  color: #1f1f1f;
+}
+.btn-dismiss:hover {
+  background-color: #f8f9fa;
+  border-color: #c3c7cb;
+}
+
+.btn-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: #5f6368;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+}
+.btn-close:hover {
+  background: #f1f3f4;
+  color: #1f1f1f;
+}

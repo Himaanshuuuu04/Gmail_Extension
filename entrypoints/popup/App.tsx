@@ -7,7 +7,7 @@ function App() {
   useEffect(() => {
     chrome.storage.local.get("gmail_layer_enabled", (result) => {
       if (result.gmail_layer_enabled !== undefined) {
-        setIsLayerEnabled(result.gmail_layer_enabled);
+        setIsLayerEnabled(!!result.gmail_layer_enabled);
       }
     });
   }, []);
