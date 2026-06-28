@@ -4,17 +4,49 @@ import { Sidebar } from "../components/Sidebar";
 import { InsightCard } from "../components/InsightCard";
 import "../components/styles.css";
 
+type Surface = "gmail" | "chat";
+
+const INSIGHT_TYPES = ["ownership", "decision", "followup"] as const;
+
+const SELECTORS = {
+  gmail: {
+    sidebarAnchor: ".bAw",
+    threadContainers: ".Bk, .G2, .G3",
+    messageRows: ".kv, .h7, .adn.ads, .adf.ads",
+  },
+  chat: {
+    sidebarAnchor: '[role="complementary"][aria-label="Side panel"]',
+    threadContainers: 'c-wiz[data-is-main-view="true"][data-topic-id]',
+    messageRows:
+      '.nF6pT[role="group"][data-id], c-wiz[data-multiplat-item-id^="MSG_LIST/"][data-topic-id]',
+  },
+} as const;
+
+function getSurface(): Surface | null {
+  if (location.hostname.includes("mail.google.com")) return "gmail";
+  if (location.hostname.includes("chat.google.com")) return "chat";
+  return null;
+}
+
+function getSelectors(surface: Surface) {
+  return SELECTORS[surface];
+}
+
 export default defineContentScript({
-  matches: ["https://mail.google.com/*"],
+  matches: ["https://mail.google.com/*", "https://chat.google.com/*"],
   cssInjectionMode: "ui",
   async main(ctx) {
     console.log("AIRA Insights extension loaded");
+
+    const surface = getSurface();
+    if (!surface) return;
+    const selectors = getSelectors(surface);
 
     // Initialize Sidebar UI
     const sidebarUi = await createShadowRootUi(ctx, {
       name: "aira-sidebar-ui",
       position: "inline",
-      anchor: ".bAw", // The Gmail side panel container
+      anchor: selectors.sidebarAnchor,
       append: (anchor, ui) => {
         anchor.parentElement?.insertBefore(ui, anchor);
         const mainContent = ui.previousElementSibling as HTMLElement | null;
@@ -26,7 +58,7 @@ export default defineContentScript({
       },
       onMount: (container) => {
         const root = createRoot(container);
-        root.render(<Sidebar />);
+        root.render(<Sidebar surface={surface} />);
         return root;
       },
       onRemove: (root) => {
@@ -34,29 +66,32 @@ export default defineContentScript({
       },
     });
 
-    const mountInterval = setInterval(() => {
-      if (document.querySelector(".bAw") && !document.querySelector("aira-sidebar-ui")) {
+    const sidebarMountInterval = setInterval(() => {
+      if (
+        document.querySelector(selectors.sidebarAnchor) &&
+        !document.querySelector("aira-sidebar-ui")
+      ) {
         try {
           sidebarUi.mount();
-          clearInterval(mountInterval);
+          clearInterval(sidebarMountInterval);
         } catch (e) {
           console.warn("AIRA Sidebar mount delayed:", e);
         }
       }
     }, 1000);
 
-    // In Gmail thread view, messages are usually grouped in a container with class .Bk or .G2 / .G3
-    // Individual messages inside the thread usually have classes like .kv (collapsed), .h7 (expanded), .adn.ads, or .adf.ads
-    const MESSAGE_CONTAINER_SELECTOR = ".kv, .h7, .adn.ads, .adf.ads";
+    const MESSAGE_CONTAINER_SELECTOR = selectors.messageRows;
 
     setInterval(() => {
-      // Find the main thread container. We want to avoid injecting on the normal home page.
-      // The home page is a list of rows (tr.zA). The thread view is usually a container with .Bk or .G2
-      const threadContainers = document.querySelectorAll(".Bk, .G2, .G3");
-      
-      threadContainers.forEach(container => {
-        const messages = Array.from(container.querySelectorAll(MESSAGE_CONTAINER_SELECTOR));
-        
+      const threadContainers = document.querySelectorAll(
+        selectors.threadContainers,
+      );
+
+      threadContainers.forEach((container) => {
+        const messages = Array.from(
+          container.querySelectorAll(MESSAGE_CONTAINER_SELECTOR),
+        );
+
         // Only apply on threads consisting of multiple followups
         if (messages.length > 1) {
           messages.forEach(async (msgEl, index) => {
@@ -66,9 +101,8 @@ export default defineContentScript({
 
             // We only want to inject a few cards as requested
             if (index < 3) {
-              const types = ["ownership", "decision", "followup"] as const;
-              const type = types[index];
-              
+              const type = INSIGHT_TYPES[index];
+
               try {
                 const cardUi = await createShadowRootUi(ctx, {
                   name: `aira-insight-card-${Math.random().toString(36).substring(7)}`,
@@ -77,14 +111,21 @@ export default defineContentScript({
                   append: (anchor, ui) => {
                     const uiHtml = ui as HTMLElement;
                     uiHtml.style.display = "block";
-                    uiHtml.style.padding = "0 16px";
-                    uiHtml.style.marginBottom = "8px";
-                    uiHtml.addEventListener("click", (e) => e.stopPropagation());
-                    anchor.insertAdjacentElement("afterend", uiHtml);
+                    uiHtml.style.padding =
+                      surface === "chat" ? "0 10px" : "0 16px";
+                    uiHtml.style.margin =
+                      surface === "chat" ? "8px 0 12px" : "0 0 8px";
+                    uiHtml.addEventListener("click", (e) =>
+                      e.stopPropagation(),
+                    );
+                    anchor.insertAdjacentElement(
+                      surface === "chat" ? "afterend" : "afterend",
+                      uiHtml,
+                    );
                   },
                   onMount: (container) => {
                     const root = createRoot(container);
-                    root.render(<InsightCard type={type} />);
+                    root.render(<InsightCard type={type} surface={surface} />);
                     return root;
                   },
                   onRemove: (root) => {

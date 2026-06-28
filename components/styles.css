@@ -9,11 +9,12 @@
 /* Sidebar Styles */
 .aira-sidebar {
   box-sizing: border-box;
-  width: 280px;
-  background: white; /* Light grey background to match Modern Gmail sidebar panel */
+  width: 286px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfbfd 100%);
   border-left: none;
-  border-radius: 1rem;
-  padding: 12px;
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08);
 
   display: flex;
   flex-direction: column;
@@ -25,6 +26,11 @@
   z-index: 1000;
   transition: width 0.3s ease, padding 0.3s ease;
   overflow: visible;
+}
+
+.aira-sidebar.chat {
+  width: 300px;
+  background: linear-gradient(180deg, #ffffff 0%, #fcfcfe 100%);
 }
 
 .aira-sidebar * {
@@ -55,10 +61,10 @@
 
 .aira-sidebar-toggle {
   position: absolute;
-  left: -34px;
-  top: 18px;
-  width: 34px;
-  height: 34px;
+  left: -30px;
+  top: 16px;
+  width: 30px;
+  height: 36px;
   background: white;
   border: 1px solid #e0e2e6;
   border-right: none;
@@ -71,14 +77,18 @@
 }
 
 .sidebar-header-card {
-  padding: 12px;
+  padding: 12px 12px 10px;
   background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
   border: 1px solid #e0e2e6;
-  border-radius: 10px;
+  border-radius: 14px;
+}
+
+.sidebar-header-card.chat {
+  padding: 10px 12px 8px;
 }
 
 .aira-sidebar-title {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   margin-bottom: 4px;
   color: #202124;
@@ -90,14 +100,18 @@
 }
 
 .sidebar-card {
-  padding: 12px 12px 12px 16px; /* spacing for pseudo-element line */
-  border-radius: 10px;
+  padding: 12px 12px 12px 14px;
+  border-radius: 14px;
   background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
   border: 1px solid #e0e2e6;
   position: relative;
   display: flex;
   gap: 10px;
   align-items: flex-start;
+}
+
+.sidebar-card.chat.featured {
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.02), 0 8px 20px rgba(59, 130, 246, 0.06);
 }
 
 .sidebar-card.ownership {
@@ -172,13 +186,18 @@
 
 .sidebar-footer {
   margin-top: auto;
-  background: linear-gradient(135deg, #f7f8f9 0%, #eef1f4 100%); /* subtle footer background */
+  background: linear-gradient(135deg, #f7f8f9 0%, #eef1f4 100%);
   border: 1px solid #e0e2e6;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 14px;
   display: flex;
   gap: 10px;
   align-items: flex-start;
+}
+
+.sidebar-footer.chat {
+  margin-top: 8px;
+  padding: 10px 12px;
 }
 
 .sidebar-footer-icon {
@@ -213,7 +232,7 @@
   position: relative;
   margin: 12px 0;
   border: 1px solid #e0e2e6;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 12px 16px;
   display: flex;
   align-items: center;
@@ -225,6 +244,14 @@
   width: 100%;
   box-shadow: 0 1px 3px rgba(0,0,0,0.03);
   box-sizing: border-box;
+}
+
+.aira-insight-card.chat {
+  padding: 10px 12px;
+  border-radius: 12px;
+  margin: 10px 0;
+  align-items: flex-start;
+  gap: 10px;
 }
 
 .aira-insight-card.ownership {
@@ -245,6 +272,10 @@
   gap: 12px;
 }
 
+.aira-insight-card.chat .insight-card-left {
+  gap: 10px;
+}
+
 .insight-card-icon-container {
   width: 34px;
   height: 34px;
@@ -263,6 +294,10 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
+}
+
+.aira-insight-card.chat .insight-card-content {
+  gap: 2px;
 }
 
 .insight-card-header {
@@ -318,6 +353,11 @@
   padding-right: 12px; /* spacing to prevent overlapping the close button */
 }
 
+.aira-insight-card.chat .insight-card-actions {
+  padding-right: 0;
+  gap: 6px;
+}
+
 .btn-action,
 .btn-dismiss {
   background: white;
@@ -332,6 +372,13 @@
   transition: background-color 0.2s, border-color 0.2s, color 0.2s;
   height: 32px;
   box-sizing: border-box;
+}
+
+.aira-insight-card.chat .btn-action,
+.aira-insight-card.chat .btn-dismiss {
+  height: 30px;
+  padding: 6px 10px;
+  font-size: 11px;
 }
 
 .btn-action {

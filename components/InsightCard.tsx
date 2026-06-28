@@ -2,6 +2,7 @@ import React from "react";
 import "./styles.css";
 
 type InsightType = "ownership" | "decision" | "followup";
+type Surface = "gmail" | "chat";
 
 interface InsightData {
   title: string;
@@ -114,11 +115,14 @@ const dataMap: Record<InsightType, InsightData> = {
   },
 };
 
-export const InsightCard: React.FC<{ type: InsightType }> = ({ type }) => {
+export const InsightCard: React.FC<{
+  type: InsightType;
+  surface?: Surface;
+}> = ({ type, surface = "gmail" }) => {
   const data = dataMap[type];
 
   return (
-    <div className={`aira-insight-card ${type}`}>
+    <div className={`aira-insight-card ${type} ${surface}`}>
       <div className="insight-card-left">
         <div className="insight-card-icon-container">
           <div className="insight-card-icon">{data.icon}</div>
