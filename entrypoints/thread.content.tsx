@@ -19,6 +19,7 @@ export default defineContentScript({
         anchor.parentElement?.insertBefore(ui, anchor);
         const mainContent = ui.previousElementSibling as HTMLElement | null;
         if (mainContent) {
+          mainContent.style.padding = "0px";
           mainContent.style.borderRadius = "16px";
           mainContent.style.overflow = "hidden";
         }
