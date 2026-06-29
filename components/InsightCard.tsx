@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import "./styles.css";
 
-type InsightType = "ownership" | "decision" | "followup";
+export type InsightType = "ownership" | "decision" | "followup";
+export type CardVariant = "full" | "compact";
 type Surface = "gmail" | "chat";
 
 interface InsightData {
@@ -9,6 +10,7 @@ interface InsightData {
   category: string;
   desc: string;
   action: string;
+  timeTag?: string;
   icon: React.ReactNode;
   actionIcon: React.ReactNode;
 }
@@ -19,6 +21,7 @@ const dataMap: Record<InsightType, InsightData> = {
     title: "It's not clear who will take the next step.",
     desc: "Assign an owner to keep this moving.",
     action: "Assign owner",
+    timeTag: "1d",
     icon: (
       <svg
         width="20"
@@ -57,6 +60,7 @@ const dataMap: Record<InsightType, InsightData> = {
     title: "Discussion is active, but no decision detected.",
     desc: "Summarize options or confirm the direction.",
     action: "Summarize",
+    timeTag: "3h",
     icon: (
       <svg
         width="20"
@@ -81,7 +85,8 @@ const dataMap: Record<InsightType, InsightData> = {
     category: "Predictive Follow-up",
     title: "This thread may benefit from a follow-up.",
     desc: "No reply in 2 days. A quick check-in can keep momentum.",
-    action: "Draft follow-up",
+    action: "Send follow-up",
+    timeTag: "2d",
     icon: (
       <svg
         width="20"
@@ -117,9 +122,78 @@ const dataMap: Record<InsightType, InsightData> = {
 
 export const InsightCard: React.FC<{
   type: InsightType;
+  variant?: CardVariant;
   surface?: Surface;
-}> = ({ type, surface = "gmail" }) => {
+}> = ({ type, variant = "full", surface = "gmail" }) => {
+  const [dismissed, setDismissed] = useState(false);
   const data = dataMap[type];
+
+  if (dismissed) return null;
+
+  if (variant === "compact") {
+    return (
+      <div className={`aira-compact-card ${type} ${surface}`}>
+        <div className="compact-sparkle-container">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#f95738">
+            <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+          </svg>
+        </div>
+        <div className="compact-icon-item">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#1a73e8"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+        </div>
+        <div className="compact-time-item">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#5f6368"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          <span>{data.timeTag || "2d"}</span>
+        </div>
+        <button className="compact-action-btn">{data.action}</button>
+        <button
+          className="compact-dismiss-btn"
+          onClick={() => setDismissed(true)}
+          title="Dismiss"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className={`aira-insight-card ${type} ${surface}`}>
@@ -147,7 +221,9 @@ export const InsightCard: React.FC<{
           <span className="btn-action-icon">{data.actionIcon}</span>{" "}
           {data.action}
         </button>
-        <button className="btn-dismiss">Dismiss</button>
+        <button className="btn-dismiss" onClick={() => setDismissed(true)}>
+          Dismiss
+        </button>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 /* Sidebar Styles */
@@ -14,7 +15,7 @@
   border-left: none;
   border-radius: 18px;
   padding: 10px;
-  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08);
+  /* box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08); */
 
   display: flex;
   flex-direction: column;
@@ -421,5 +422,85 @@
 .btn-dismiss:hover {
   background-color: #f8f9fa;
   border-color: #c3c7cb;
+}
+
+/* Compact Card Styles */
+.aira-compact-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid #e0e2e6;
+  border-radius: 24px;
+  padding: 4px 10px 4px 5px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05);
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  box-sizing: border-box;
+  margin: 6px 0 10px 0;
+}
+
+.compact-sparkle-container {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #fff3ed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.compact-icon-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a73e8;
+  padding: 0 2px;
+}
+
+.compact-time-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #5f6368;
+  font-size: 12px;
+  font-weight: 500;
+  margin-right: 2px;
+}
+
+.compact-action-btn {
+  background: #ffffff;
+  border: 1px solid #dcdfe4;
+  border-radius: 8px;
+  padding: 5px 12px;
+  color: #6200ee;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.compact-action-btn:hover {
+  background-color: #f8f9fa;
+  border-color: #c3c7cb;
+}
+
+.compact-dismiss-btn {
+  background: transparent;
+  border: none;
+  color: #5f6368;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.compact-dismiss-btn:hover {
+  background-color: #f1f3f4;
+  color: #202124;
 }
 
