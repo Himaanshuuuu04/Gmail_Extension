@@ -41,11 +41,35 @@ function getSelectors(surface: Surface) {
   return SELECTORS[surface];
 }
 
+function injectGoogleFonts() {
+  if (!document.getElementById("aira-google-fonts")) {
+    const link1 = document.createElement("link");
+    link1.rel = "preconnect";
+    link1.href = "https://fonts.googleapis.com";
+
+    const link2 = document.createElement("link");
+    link2.rel = "preconnect";
+    link2.href = "https://fonts.gstatic.com";
+    link2.crossOrigin = "anonymous";
+
+    const link3 = document.createElement("link");
+    link3.id = "aira-google-fonts";
+    link3.rel = "stylesheet";
+    link3.href =
+      "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap";
+
+    document.head.appendChild(link1);
+    document.head.appendChild(link2);
+    document.head.appendChild(link3);
+  }
+}
+
 export default defineContentScript({
   matches: ["https://mail.google.com/*", "https://chat.google.com/*"],
   cssInjectionMode: "ui",
   async main(ctx) {
     console.log("AIRA Insights extension loaded");
+    injectGoogleFonts();
 
     const surface = getSurface();
     if (!surface) return;
